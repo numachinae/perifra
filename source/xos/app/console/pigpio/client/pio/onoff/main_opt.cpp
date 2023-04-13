@@ -13,40 +13,35 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.cpp
+///   File: main_opt.cpp
 ///
 /// Author: $author$
-///   Date: 4/12/2023
+///   Date: 4/2/2023
 //////////////////////////////////////////////////////////////////////////
-#include "xos/app/console/framework/version/main.hpp"
+#include "xos/app/console/pigpio/client/pio/onoff/main_opt.hpp"
 
-#ifdef XOS_CONSOLE_MAIN_MAIN
-#include "xos/console/main_main.cpp"
-#ifndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE
-#define XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE
-#else /// ndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE 
-#endif /// ndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE 
-#else /// def XOS_CONSOLE_MAIN_MAIN 
-#endif /// def XOS_CONSOLE_MAIN_MAIN 
-
-#ifndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE
-/// #define XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE 
-#else /// ndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE 
-#endif /// ndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE 
+#ifndef XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_OPT_INSTANCE
+/// #define XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_OPT_INSTANCE 
+#else /// ndef XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_OPT_INSTANCE 
+#endif /// ndef XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_OPT_INSTANCE 
 
 namespace xos {
 namespace app {
 namespace console {
-namespace framework {
-namespace version {
+namespace pigpio {
+namespace client {
+namespace pio {
+namespace onoff {
 
 /// class 
-#ifdef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE
-static main the_main;
-#endif /// def XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_INSTANCE 
+#ifdef XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_OPT_INSTANCE
+static main_opt the_main_opt;
+#endif /// def XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_OPT_INSTANCE 
 
-} /// namespace version 
-} /// namespace framework 
+} /// namespace onoff 
+} /// namespace pio 
+} /// namespace client 
+} /// namespace pigpio 
 } /// namespace console 
 } /// namespace app 
 } /// namespace xos 

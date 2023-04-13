@@ -16,22 +16,24 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 4/12/2023
+///   Date: 4/2/2023
 //////////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
-#define XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_HPP
+#define XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_HPP
 
-#include "xos/app/console/framework/version/main_opt.hpp"
+#include "xos/app/console/pigpio/client/pio/onoff/main_opt.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
-namespace framework {
-namespace version {
+namespace pigpio {
+namespace client {
+namespace pio {
+namespace onoff {
 
 /// class maint
 template 
-<class TExtends = xos::app::console::framework::version::main_optt<>,  class TImplements = typename TExtends::implements>
+<class TExtends = xos::app::console::pigpio::client::pio::onoff::main_optt<>,  class TImplements = typename TExtends::implements>
 
 class maint: virtual public TImplements, public TExtends {
 public:
@@ -78,10 +80,12 @@ protected:
 }; /// class maint 
 typedef maint<> main;
 
-} /// namespace version 
-} /// namespace framework 
+} /// namespace onoff 
+} /// namespace pio 
+} /// namespace client 
+} /// namespace pigpio 
 } /// namespace console 
 } /// namespace app 
 } /// namespace xos 
 
-#endif /// ndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_PIGPIO_CLIENT_PIO_ONOFF_MAIN_HPP

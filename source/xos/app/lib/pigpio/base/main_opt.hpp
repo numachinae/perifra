@@ -16,52 +16,41 @@
 ///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 4/6/2023, 4/12/2023
+///   Date: 3/27/2023
 //////////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPT_HPP
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPT_HPP
+#ifndef XOS_APP_LIB_PIGPIO_BASE_MAIN_OPT_HPP
+#define XOS_APP_LIB_PIGPIO_BASE_MAIN_OPT_HPP
 
-#include "xos/app/console/base/main.hpp"
-#include "xos/lib/perifra/version.hpp"
-
-///////////////////////////////////////////////////////////////////////
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_CHARS_EXTEND \
-
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_OPTIONS_EXTEND \
+#include "xos/app/rete/base/main.hpp"
 
 ///////////////////////////////////////////////////////////////////////
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_VERBOSE_OPTIONS_CHARS \
-   XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_CHARS_EXTEND \
-   XOS_APP_CONSOLE_BASE_MAIN_VERBOSE_OPTIONS_CHARS \
+#define XOS_APP_LIB_PIGPIO_BASE_MAIN_OPTIONS_CHARS_EXTEND \
 
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_VERBOSE_OPTIONS_OPTIONS \
-   XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_OPTIONS_EXTEND \
-   XOS_APP_CONSOLE_BASE_MAIN_VERBOSE_OPTIONS_OPTIONS \
+#define XOS_APP_LIB_PIGPIO_BASE_MAIN_OPTIONS_OPTIONS_EXTEND \
 
 ///////////////////////////////////////////////////////////////////////
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_CHARS \
-   XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_CHARS_EXTEND \
-   XOS_APP_CONSOLE_BASE_MAIN_OPTIONS_CHARS \
+#define XOS_APP_LIB_PIGPIO_BASE_MAIN_OPTIONS_CHARS \
+   XOS_APP_LIB_PIGPIO_BASE_MAIN_OPTIONS_CHARS_EXTEND \
+   XOS_APP_RETE_BASE_MAIN_OPTIONS_CHARS \
 
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_OPTIONS \
-   XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_OPTIONS_EXTEND \
-   XOS_APP_CONSOLE_BASE_MAIN_OPTIONS_OPTIONS \
+#define XOS_APP_LIB_PIGPIO_BASE_MAIN_OPTIONS_OPTIONS \
+   XOS_APP_LIB_PIGPIO_BASE_MAIN_OPTIONS_OPTIONS_EXTEND \
+   XOS_APP_RETE_BASE_MAIN_OPTIONS_OPTIONS \
 
 ///////////////////////////////////////////////////////////////////////
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_ARGS 0
-#define XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_ARGV 0,
+#define XOS_APP_LIB_PIGPIO_BASE_MAIN_ARGS 0
+#define XOS_APP_LIB_PIGPIO_BASE_MAIN_ARGV 0,
 
 namespace xos {
 namespace app {
-namespace console {
-namespace perifra {
-namespace version {
+namespace lib {
+namespace pigpio {
+namespace base {
 
 /// class main_optt
 template 
-<class TExtends = xos::app::console::base::maint<xos::app::console::base::main_optt
- <xos::app::console::version::maint<xos::lib::perifra::version> > >,  
- class TImplements = typename TExtends::implements>
+<class TMain = xos::app::protocol::network::sockets::base::maint<>,
+ class TExtends = xos::app::rete::base::maint<TMain>,  class TImplements = typename TExtends::implements>
 
 class main_optt: virtual public TImplements, public TExtends {
 public:
@@ -69,6 +58,7 @@ public:
     typedef TExtends extends;
     typedef main_optt derives;
 
+    typedef typename extends::main_t main_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
@@ -129,9 +119,9 @@ protected:
 
     /// options
     virtual const char_t* options(const struct option*& longopts) {
-        static const char_t* chars = XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_CHARS;
+        static const char_t* chars = XOS_APP_LIB_PIGPIO_BASE_MAIN_OPTIONS_CHARS;
         static struct option optstruct[]= {
-            XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPTIONS_OPTIONS
+            XOS_APP_LIB_PIGPIO_BASE_MAIN_OPTIONS_OPTIONS
             {0, 0, 0, 0}};
         longopts = optstruct;
         return chars;
@@ -139,9 +129,9 @@ protected:
 
     /// arguments
     virtual const char_t* arguments(const char_t**& argv) {
-        static const char_t* _args = XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_ARGS;
+        static const char_t* _args = XOS_APP_LIB_PIGPIO_BASE_MAIN_ARGS;
         static const char_t* _argv[] = {
-            XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_ARGV
+            XOS_APP_LIB_PIGPIO_BASE_MAIN_ARGV
             0};
         argv = _argv;
         return _args;
@@ -151,10 +141,10 @@ protected:
 }; /// class main_optt 
 typedef main_optt<> main_opt;
 
-} /// namespace version 
-} /// namespace perifra 
-} /// namespace console 
+} /// namespace base 
+} /// namespace pigpio 
+} /// namespace lib 
 } /// namespace app 
 } /// namespace xos 
 
-#endif /// ndef XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_OPT_HPP
+#endif /// ndef XOS_APP_LIB_PIGPIO_BASE_MAIN_OPT_HPP

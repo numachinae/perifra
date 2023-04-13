@@ -16,22 +16,30 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 4/12/2023
+///   Date: 3/25/2023
 //////////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
-#define XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
+#ifndef XOS_APP_PIGPIO_BASE_MAIN_HPP
+#define XOS_APP_PIGPIO_BASE_MAIN_HPP
 
-#include "xos/app/console/framework/version/main_opt.hpp"
+#include "xos/app/pigpio/base/main_opt.hpp"
+
+#define XOS_APP_CONSOLE_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_PORT 8484
+
+#define XOS_APP_CONSOLE_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_ACCEPT_PORT \
+     XOS_APP_CONSOLE_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_PORT
+
+#define XOS_APP_CONSOLE_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_CONNECT_PORT \
+     XOS_APP_CONSOLE_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_PORT
 
 namespace xos {
 namespace app {
-namespace console {
-namespace framework {
-namespace version {
+namespace pigpio {
+namespace base {
 
 /// class maint
 template 
-<class TExtends = xos::app::console::framework::version::main_optt<>,  class TImplements = typename TExtends::implements>
+<class TMain = xos::app::protocol::network::sockets::base::maint<>,
+ class TExtends = xos::app::pigpio::base::main_optt<TMain>,  class TImplements = typename TExtends::implements>
 
 class maint: virtual public TImplements, public TExtends {
 public:
@@ -39,6 +47,7 @@ public:
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef typename extends::main_t main_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
@@ -48,7 +57,13 @@ public:
     typedef typename extends::file_t file_t;
 
     /// constructor / destructor
-    maint(): run_(0) {
+    maint()
+    : run_(0), 
+      accept_port_(XOS_APP_CONSOLE_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_ACCEPT_PORT), 
+      connect_port_(XOS_APP_CONSOLE_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_CONNECT_PORT) {
+        main_t& main = this->main();
+        main.set_accept_port(accept_port_);
+        main.set_connect_port(connect_port_);
     }
     virtual ~maint() {
     }
@@ -74,14 +89,22 @@ protected:
         return err;
     }
 
+    /// ...port...
+    virtual short& accept_port() const {
+        return (short&)accept_port_;
+    }
+    virtual short& connect_port() const {
+        return (short&)connect_port_;
+    }
+
 protected:
+    short accept_port_, connect_port_;    
 }; /// class maint 
 typedef maint<> main;
 
-} /// namespace version 
-} /// namespace framework 
-} /// namespace console 
+} /// namespace base 
+} /// namespace pigpio 
 } /// namespace app 
 } /// namespace xos 
 
-#endif /// ndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
+#endif /// ndef XOS_APP_PIGPIO_BASE_MAIN_HPP

@@ -16,22 +16,23 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 4/12/2023
+///   Date: 3/27/2023
 //////////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
-#define XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
+#ifndef XOS_APP_LIB_PIGPIO_BASE_MAIN_HPP
+#define XOS_APP_LIB_PIGPIO_BASE_MAIN_HPP
 
-#include "xos/app/console/framework/version/main_opt.hpp"
+#include "xos/app/lib/pigpio/base/main_opt.hpp"
 
 namespace xos {
 namespace app {
-namespace console {
-namespace framework {
-namespace version {
+namespace lib {
+namespace pigpio {
+namespace base {
 
 /// class maint
 template 
-<class TExtends = xos::app::console::framework::version::main_optt<>,  class TImplements = typename TExtends::implements>
+<class TMain = xos::app::protocol::network::sockets::base::maint<>,
+ class TExtends = xos::app::lib::pigpio::base::main_optt<TMain>,  class TImplements = typename TExtends::implements>
 
 class maint: virtual public TImplements, public TExtends {
 public:
@@ -39,6 +40,7 @@ public:
     typedef TExtends extends;
     typedef maint derives;
 
+    typedef typename extends::main_t main_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
@@ -78,10 +80,10 @@ protected:
 }; /// class maint 
 typedef maint<> main;
 
-} /// namespace version 
-} /// namespace framework 
-} /// namespace console 
+} /// namespace base 
+} /// namespace pigpio 
+} /// namespace lib 
 } /// namespace app 
 } /// namespace xos 
 
-#endif /// ndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
+#endif /// ndef XOS_APP_LIB_PIGPIO_BASE_MAIN_HPP

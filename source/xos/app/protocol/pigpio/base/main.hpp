@@ -16,22 +16,30 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 4/12/2023
+///   Date: 3/28/2023
 //////////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
-#define XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
+#ifndef XOS_APP_PROTOCOL_PIGPIO_BASE_MAIN_HPP
+#define XOS_APP_PROTOCOL_PIGPIO_BASE_MAIN_HPP
 
-#include "xos/app/console/framework/version/main_opt.hpp"
+#include "xos/app/protocol/network/sockets/base/main.hpp"
+
+#define XOS_APP_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_PORT 8484
+
+#define XOS_APP_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_ACCEPT_PORT \
+     XOS_APP_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_PORT
+
+#define XOS_APP_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_CONNECT_PORT \
+     XOS_APP_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_PORT
 
 namespace xos {
 namespace app {
-namespace console {
-namespace framework {
-namespace version {
+namespace protocol {
+namespace pigpio {
+namespace base {
 
 /// class maint
 template 
-<class TExtends = xos::app::console::framework::version::main_optt<>,  class TImplements = typename TExtends::implements>
+<class TExtends = xos::app::protocol::network::sockets::base::maint<>,  class TImplements = typename TExtends::implements>
 
 class maint: virtual public TImplements, public TExtends {
 public:
@@ -48,7 +56,10 @@ public:
     typedef typename extends::file_t file_t;
 
     /// constructor / destructor
-    maint(): run_(0) {
+    maint()
+    : run_(0),
+      accept_port_(XOS_APP_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_ACCEPT_PORT), 
+      connect_port_(XOS_APP_PROTOCOL_PERIFRA_CONTROL_PIGPIO_NETWORK_SOCKETS_CONNECT_PORT) {
     }
     virtual ~maint() {
     }
@@ -74,14 +85,23 @@ protected:
         return err;
     }
 
+    /// ...port...
+    virtual short& accept_port() const {
+        return (short&)accept_port_;
+    }
+    virtual short& connect_port() const {
+        return (short&)connect_port_;
+    }
+
 protected:
+    short accept_port_, connect_port_;    
 }; /// class maint 
 typedef maint<> main;
 
-} /// namespace version 
-} /// namespace framework 
-} /// namespace console 
+} /// namespace base 
+} /// namespace pigpio 
+} /// namespace protocol 
 } /// namespace app 
 } /// namespace xos 
 
-#endif /// ndef XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_HPP
+#endif /// ndef XOS_APP_PROTOCOL_PIGPIO_BASE_MAIN_HPP
