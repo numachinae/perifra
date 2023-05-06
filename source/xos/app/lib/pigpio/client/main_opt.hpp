@@ -77,13 +77,26 @@
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_RESTART_OPTARG_RESULT, \
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_RESTART_OPTVAL_C}, \
 
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPT "start"
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTARG_RESULT 0
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTARG ""
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTUSE "start pio server"
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTVAL_S "S"
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTVAL_C 'S'
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTION \
+   {XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPT, \
+    XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTARG_REQUIRED, \
+    XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTARG_RESULT, \
+    XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTVAL_C}, \
+
 #define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPT "stop"
 #define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
 #define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTARG_RESULT 0
 #define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTARG ""
 #define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTUSE "stop pio server"
-#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTVAL_S "S"
-#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTVAL_C 'S'
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTVAL_S "T"
+#define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTVAL_C 'T'
 #define XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTION \
    {XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPT, \
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTARG_REQUIRED, \
@@ -95,6 +108,7 @@
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_PIO_PIN_VALUE_OPTVAL_S \
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_PIO_PIN_NUMBER_OPTVAL_S \
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_RESTART_OPTVAL_S \
+    XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTVAL_S \
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTVAL_S \
 //    XOS_APP_LIB_PIGPIO_CLIENT_MAIN_PIO_PIN_MODE_OPTVAL_S \
 
@@ -102,6 +116,7 @@
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_PIO_PIN_VALUE_OPTION \
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_PIO_PIN_NUMBER_OPTION \
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_RESTART_OPTION \
+    XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTION \
     XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTION \
 //    XOS_APP_LIB_PIGPIO_CLIENT_MAIN_PIO_PIN_MODE_OPTION \
 
@@ -388,6 +403,49 @@ protected:
         return err;
     }
 
+    /// ...start_run
+    virtual int start_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int before_start_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_start_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_start_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_start_run(argc, argv, env))) {
+            int err2 = 0;
+            err = start_run(argc, argv, env);
+            if ((err2 = after_start_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_start_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_start_run;
+        return err;
+    }
+    virtual int start_run_set(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int unset_start_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = 0;
+        return err;
+    }
+    virtual int start_run_unset(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+
     /// ...stop_run
     virtual int stop_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
@@ -658,6 +716,41 @@ protected:
         return chars;
     }
 
+    /// on...start_option...
+    virtual int on_set_start_option
+    (const char_t* optarg, int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        return err;
+    }
+    virtual int on_start_option_set
+    (const char_t* optarg, int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if (!(err = set_start_run(argc, argv, env))) {
+            if (!(err = start_run_set(argc, argv, env))) {
+            } else {
+            }
+        } else {
+        }
+        return err;
+    }
+    virtual int on_start_option
+    (int optval, const char_t* optarg, const char_t* optname,
+     int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if (!(err = on_set_start_option(optarg, optind, argc, argv, env))) {
+            if (!(err = on_start_option_set(optarg, optind, argc, argv, env))) {
+            } else {
+            }
+        } else {
+        }
+        return err;
+    }
+    virtual const char_t* start_option_usage(const char_t*& optarg, const struct option* longopt) {
+        const char_t* chars = XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTUSE;
+        optarg = XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTARG;
+        return chars;
+    }
+
     /// on...stop_option...
     virtual int on_set_stop_option
     (const char_t* optarg, int optind, int argc, char_t**argv, char_t**env) {
@@ -713,6 +806,9 @@ protected:
         case XOS_APP_LIB_PIGPIO_CLIENT_MAIN_RESTART_OPTVAL_C:
             err = this->on_restart_option(optval, optarg, optname, optind, argc, argv, env);
             break;
+        case XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTVAL_C:
+            err = this->on_start_option(optval, optarg, optname, optind, argc, argv, env);
+            break;
         case XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTVAL_C:
             err = this->on_stop_option(optval, optarg, optname, optind, argc, argv, env);
             break;
@@ -740,6 +836,9 @@ protected:
 
         case XOS_APP_LIB_PIGPIO_CLIENT_MAIN_RESTART_OPTVAL_C:
             chars = this->restart_option_usage(optarg, longopt);
+            break;
+        case XOS_APP_LIB_PIGPIO_CLIENT_MAIN_START_OPTVAL_C:
+            chars = this->start_option_usage(optarg, longopt);
             break;
         case XOS_APP_LIB_PIGPIO_CLIENT_MAIN_STOP_OPTVAL_C:
             chars = this->stop_option_usage(optarg, longopt);

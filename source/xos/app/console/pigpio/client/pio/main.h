@@ -30,6 +30,7 @@ extern "C" {
 #endif /*/ defined(__cplusplus) /*/
 
 int gpioRestart();
+int gpioStart();
 int gpioStop();
 
 int gpioSetHost(const char* to);

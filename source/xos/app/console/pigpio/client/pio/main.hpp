@@ -87,6 +87,13 @@ protected:
         gpioRestart();
         return err;
     }
+    /// on...start_option...
+    virtual int on_set_start_option
+    (const char_t* optarg, int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        gpioStart();
+        return err;
+    }
     /// on...stop_option...
     virtual int on_set_stop_option
     (const char_t* optarg, int optind, int argc, char_t**argv, char_t**env) {

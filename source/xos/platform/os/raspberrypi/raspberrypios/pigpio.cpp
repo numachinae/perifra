@@ -16,10 +16,11 @@
 ///   File: pigpio.cpp
 ///
 /// Author: $author$
-///   Date: 12/29/2022
+///   Date: 12/29/2022, 5/5/2023
 ///////////////////////////////////////////////////////////////////////
 #include "xos/platform/os/raspberrypi/raspberrypios/pigpio.hpp"
 #include "xos/platform/os/raspberrypi/raspberrypios/pigpio.c"
+#include "xos/platform/raspberrypi/gpio.hpp"
 
 namespace xos {
 namespace platform {
@@ -33,14 +34,33 @@ namespace raspberrypios {
 } /// namespace platform
 } /// namespace xos
 
+#if !defined(RASPBERRYPIOS)
+static xos::platform::raspberrypi::pinout* the_pinout = 0;
+static xos::platform::raspberrypi::gpio* the_gpio = 0;
+
 /// ...Initialise / ...Terminate
 int gpioInitialise(void) {
-    int err = 0;
+    int err = 1;
     LOGGER_LOG_INFO("(void)...");
+    if ((the_pinout = new xos::platform::raspberrypi::pinout())) {
+        if ((the_gpio = new xos::platform::raspberrypi::gpio())) {
+            return err = 0;
+        }
+        delete the_pinout;
+        the_pinout = 0;
+    }
     return err;
 }
 void gpioTerminate(void) {
     LOGGER_LOG_INFO("(void)...");
+    if ((the_gpio)) {
+        delete the_gpio;
+        the_gpio = 0;
+    }
+    if ((the_pinout)) {
+        delete the_pinout;
+        the_pinout = 0;
+    }
 }
 
 /// ...Mode
@@ -58,11 +78,17 @@ int gpioSetMode(unsigned gpio, unsigned mode) {
 /// ...Read / ...Write
 int gpioRead(unsigned gpio) {
     int err = -1;
-    LOGGER_LOG_INFO("(unsigned gpio = " << gpio << ")...");
+    LOGGER_LOG_INFO("xos::platform::raspberrypi::gpio::read(unsigned gpio = " << gpio << ")...");
+    err = xos::platform::raspberrypi::gpio::read(gpio);
+    LOGGER_LOG_INFO("..." << err << " = xos::platform::raspberrypi::gpio::read(unsigned gpio = " << gpio << ")");
     return err;
 }
 int gpioWrite(unsigned gpio, unsigned level) {
-    int err = 0;
-    LOGGER_LOG_INFO("(unsigned gpio = " << gpio << ", unsigned level = " << level << ")...");
+    int err = -1;
+    LOGGER_LOG_INFO("xos::platform::raspberrypi::gpio::write((unsigned gpio = " << gpio << ", unsigned level = " << level << ")...");
+    err = xos::platform::raspberrypi::gpio::write(gpio, level);
+    LOGGER_LOG_INFO("..." << err << " = xos::platform::raspberrypi::gpio::write((unsigned gpio = " << gpio << ", unsigned level = " << level << ")");
     return err;
 }
+#else /// !defined(RASPBERRYPIOS)
+#endif /// !defined(RASPBERRYPIOS)

@@ -17,8 +17,11 @@
 ///   File: pigpio.c
 ///
 /// Author: $author$
-///   Date: 12/29/2022
+///   Date: 12/29/2022, 5/5/2023
 ///////////////////////////////////////////////////////////////////////
 /*/
 #include "xos/platform/os/raspberrypi/raspberrypios/pigpio.h"
 
+#if !defined(RASPBERRYPIOS)
+#else /// !defined(RASPBERRYPIOS)
+#endif /// !defined(RASPBERRYPIOS)

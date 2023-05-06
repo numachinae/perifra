@@ -16,13 +16,18 @@
 ///   File: pigpio.hpp
 ///
 /// Author: $author$
-///   Date: 12/29/2022
+///   Date: 12/29/2022, 5/5/2023
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_PLATFORM_OS_RASPBERRYPI_RASPBERRYPIOS_PIGPIO_HPP
 #define XOS_PLATFORM_OS_RASPBERRYPI_RASPBERRYPIOS_PIGPIO_HPP
 
-#include "xos/platform/os/raspberrypi/raspberrypios/pigpio.h"
 #include "xos/base/logger.hpp"
+
+#if defined(RASPBERRYPIOS) && !defined(APPLEOS)
+#include <pigpio.h>
+#else /// defined(RASPBERRYPIOS) && !defined(APPLEOS)
+#include "xos/platform/os/raspberrypi/raspberrypios/pigpio.h"
+#endif /// defined(RASPBERRYPIOS) && !defined(APPLEOS)
 
 namespace xos {
 namespace platform {

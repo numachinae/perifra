@@ -16,7 +16,7 @@
 ///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 12/29/2022, 4/12/2023
+///   Date: 12/29/2022, 5/2/2023
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_APP_CONSOLE_PIO_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_PIO_MAIN_OPT_HPP
@@ -110,11 +110,11 @@
 ///////////////////////////////////////////////////////////////////////
 #define XOS_APP_CONSOLE_PIO_MAIN_OPTIONS_CHARS \
    XOS_APP_CONSOLE_PIO_MAIN_OPTIONS_CHARS_EXTEND \
-   XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_VERBOSE_OPTIONS_CHARS
+   XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_OPTIONS_CHARS
 
 #define XOS_APP_CONSOLE_PIO_MAIN_OPTIONS_OPTIONS \
    XOS_APP_CONSOLE_PIO_MAIN_OPTIONS_OPTIONS_EXTEND \
-   XOS_APP_CONSOLE_PERIFRA_VERSION_MAIN_VERBOSE_OPTIONS_OPTIONS
+   XOS_APP_CONSOLE_FRAMEWORK_VERSION_MAIN_OPTIONS_OPTIONS
 
 ///////////////////////////////////////////////////////////////////////
 #define XOS_APP_CONSOLE_PIO_MAIN_ARGS 0
@@ -149,8 +149,10 @@ public:
     : run_(0), 
       verbose_output_(false), 
       pio_pin_(XOS_APP_CONSOLE_PIO_MAIN_PIN_NUMBER), 
-      pio_value_(XOS_APP_CONSOLE_PIO_MAIN_PIN_VALUE/*/), 
-      pio_mode_(XOS_APP_CONSOLE_PIO_MAIN_PIN_MODE/*/) {
+      pio_value_(XOS_APP_CONSOLE_PIO_MAIN_PIN_VALUE)
+      /*/,
+      pio_mode_(XOS_APP_CONSOLE_PIO_MAIN_PIN_MODE)
+      /*/ {
     }
     virtual ~main_optt() {
     }
@@ -178,7 +180,8 @@ protected:
         return err;
     }
 
-    virtual int before_pio_run(int argc, char_t** argv, char_t** env) {
+    /// ...pio...run
+    virtual int pio_initialize_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         pio_t& pio = this->pio();
         LOGGER_IS_LOGGED_INFO("(err = (!(pio.initialize())?(1):(0)))...");
@@ -189,7 +192,7 @@ protected:
         }
         return err;
     }
-    virtual int after_pio_run(int argc, char_t** argv, char_t** env) {
+    virtual int pio_finalize_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         pio_t& pio = this->pio();
         LOGGER_IS_LOGGED_INFO("(err = (!(pio.finalize())?(1):(0)))...");
@@ -197,6 +200,26 @@ protected:
             LOGGER_IS_LOGGED_ERROR("...failed on (" << err << " = (!(pio.finalize())?(1):(0)))");
         } else {
             LOGGER_IS_LOGGED_INFO("...(" << err << " = (!(pio.finalize())?(1):(0)))");
+        }
+        return err;
+    }
+    virtual int before_pio_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        LOGGER_IS_LOGGED_INFO("this->pio_initialize_run(argc, argv, env)...");
+        if (!(err = this->pio_initialize_run(argc, argv, env))) {
+            LOGGER_IS_LOGGED_INFO("..." << err << " = this->pio_initialize_run(argc, argv, env)");
+        } else {
+            LOGGER_IS_LOGGED_INFO("...failed " << err << " = this->before_pio_pin_run(argc, argv, env)");
+        }
+        return err;
+    }
+    virtual int after_pio_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        LOGGER_IS_LOGGED_INFO("this->pio_finalize_run(argc, argv, env)...");
+        if (!(err = this->pio_finalize_run(argc, argv, env))) {
+            LOGGER_IS_LOGGED_INFO("..." << err << " = this->pio_finalize_run(argc, argv, env)");
+        } else {
+            LOGGER_IS_LOGGED_INFO("...failed " << err << " = this->pio_finalize_run(argc, argv, env)");
         }
         return err;
     }

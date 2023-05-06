@@ -61,7 +61,12 @@ public:
       middle_gpioRead_request_(""), 
       end_gpioRead_request_("\"}]}}"),
 
-      gpioRestart_request_("restart"), 
+      begin_gpioRead_response_("{\"pigpio\":{\"gpioLevel\":{\"gpio\":\""),
+      middle_gpioRead_response_("\"},{\"level\":\""),
+      end_gpioRead_response_("\"}}}"),
+
+      gpioRestart_request_("restart"),
+      gpioStart_request_("start"),
       gpioStop_request_("stop") {
     }
     virtual ~maint() {
@@ -146,6 +151,18 @@ public:
     }
     virtual int after_gpioRead_run(const uint8_t& gpio, int argc, char_t** argv, char_t** env) {
         int err = 0;
+        const string_t& response = this->response();
+        const char_t *chars = 0; size_t length = 0;
+
+        LOGGER_IS_LOGGED_INFO("response.has_chars(length)...");
+        if ((chars = response.has_chars(length))) {
+            string_t& gpioRead_response = this->gpioRead_response();
+
+            LOGGER_IS_LOGGED_INFO("...\"" << chars << "\" = response.has_chars(" << length << ")");
+            LOGGER_IS_LOGGED_INFO("gpioRead_response.assign(\"" << chars << "\", " << length << ")...");
+            gpioRead_response.assign(chars, length);
+        } else {
+        }
         return err;
     }
     virtual int all_gpioRead_run(const uint8_t& gpio, int argc, char_t** argv, char_t** env) {
@@ -193,6 +210,45 @@ public:
             int err2 = 0;
             err = gpioRestart_run(argc, argv, env);
             if ((err2 = after_gpioRestart_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...gpioStart_run
+    virtual int gpioStart_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = run(argc, argv, env))) {
+        } else {
+        }
+        return err;
+    }
+    virtual int before_gpioStart_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        string_t& gpioStart_request = this->gpioStart_request();
+        string_t& gpio_request = this->gpio_request();
+
+        gpio_request.assign(gpioStart_request);
+        this->set_request(gpio_request);
+        if (!(err = this->set_connect_run(argc, argv, env))) {
+            if (!(err = this->connect_run_set(argc, argv, env))) {
+            } else {
+            }
+        } else {
+        }
+        return err;
+    }
+    virtual int after_gpioStart_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_gpioStart_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_gpioStart_run(argc, argv, env))) {
+            int err2 = 0;
+            err = gpioStart_run(argc, argv, env);
+            if ((err2 = after_gpioStart_run(argc, argv, env))) {
                 if (!(err)) err = err2;
             }
         }
@@ -255,7 +311,7 @@ protected:
         return err;
     }
 
-    /// ...gpio...request
+    /// ...gpio...request / ...gpio...response
     virtual string_t& begin_gpioWrite_request() const {
         return (string_t&)begin_gpioWrite_request_;
     }
@@ -274,8 +330,23 @@ protected:
     virtual string_t& end_gpioRead_request() const {
         return (string_t&)end_gpioRead_request_;
     }
+    virtual string_t& begin_gpioRead_response() const {
+        return (string_t&)begin_gpioRead_response_;
+    }
+    virtual string_t& middle_gpioRead_response() const {
+        return (string_t&)middle_gpioRead_response_;
+    }
+    virtual string_t& end_gpioRead_response() const {
+        return (string_t&)end_gpioRead_response_;
+    }
+    virtual string_t& gpioRead_response() const {
+        return (string_t&)gpioRead_response_;
+    }
     virtual string_t& gpioRestart_request() const {
         return (string_t&)gpioRestart_request_;
+    }
+    virtual string_t& gpioStart_request() const {
+        return (string_t&)gpioStart_request_;
     }
     virtual string_t& gpioStop_request() const {
         return (string_t&)gpioStop_request_;
@@ -286,8 +357,9 @@ protected:
     
 protected:
     string_t begin_gpioWrite_request_, middle_gpioWrite_request_, end_gpioWrite_request_, 
-             begin_gpioRead_request_, middle_gpioRead_request_, end_gpioRead_request_, 
-             gpioRestart_request_, gpioStop_request_, gpio_request_;
+             begin_gpioRead_request_, middle_gpioRead_request_, end_gpioRead_request_,
+             begin_gpioRead_response_, middle_gpioRead_response_, end_gpioRead_response_, gpioRead_response_,
+             gpioRestart_request_, gpioStart_request_, gpioStop_request_, gpio_request_;
 }; /// class maint 
 typedef maint<> main;
 

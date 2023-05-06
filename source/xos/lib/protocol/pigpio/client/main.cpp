@@ -138,6 +138,9 @@ int gpioRead (unsigned gpio) {
     LOGGER_LOG_INFO("xos::lib::protocol::pigpio::client::the_main.gpioRead(unsigned gpio = " << gpio << ")...");
     if (!(err = xos::lib::protocol::pigpio::client::the_main.gpioRead(gpio))) {
         LOGGER_LOG_INFO("..." << err <<" = xos::lib::protocol::pigpio::client::the_main.gpioRead(unsigned gpio = " << gpio << ")");
+        LOGGER_LOG_INFO("xos::lib::protocol::pigpio::client::the_main.gpioRead_level()...");
+        err = xos::lib::protocol::pigpio::client::the_main.gpioRead_level();
+        LOGGER_LOG_INFO("..." << err <<" = xos::lib::protocol::pigpio::client::the_main.gpioRead_level()");
     } else {
     }
     return err;
@@ -152,12 +155,21 @@ int gpioWrite(unsigned gpio, unsigned level) {
     return err;
 }
 
-/// ...Restart / ...Stop
+/// ...Restart / ...Start / ...Stop
 int gpioRestart() {
     int err = 0;
     LOGGER_LOG_INFO("xos::lib::protocol::pigpio::client::the_main.gpioRestart()...");
     if (!(err = xos::lib::protocol::pigpio::client::the_main.gpioRestart())) {
         LOGGER_LOG_INFO("..." << err <<" = xos::lib::protocol::pigpio::client::the_main.gpioRestart()");
+    } else {
+    }
+    return err;
+}
+int gpioStart() {
+    int err = 0;
+    LOGGER_LOG_INFO("xos::lib::protocol::pigpio::client::the_main.gpioStart()...");
+    if (!(err = xos::lib::protocol::pigpio::client::the_main.gpioStart())) {
+        LOGGER_LOG_INFO("..." << err <<" = xos::lib::protocol::pigpio::client::the_main.gpioStart()");
     } else {
     }
     return err;

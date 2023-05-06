@@ -161,6 +161,16 @@ protected:
         return err;
     }
 
+    /// ...start_run
+    virtual int start_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        main_t& main = this->main();
+        if (!(err = main.all_gpioStart_run(argc, argv, env))) {
+        } else {
+        }
+        return err;
+    }
+
     /// ...stop_run
     virtual int stop_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
