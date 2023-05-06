@@ -359,6 +359,21 @@ perifra_os_pigpio_LIBS += \
 } else {
 } # contains(PERIFRA_OS,macosx|linux)
 
+# perifra os_pigpioc LIBS
+#
+contains(PERIFRA_OS,macosx) {
+perifra_os_pigpioc_LIBS += \
+-L$${PERIFRA_LIB}/libpigpioc 
+} else {
+} # contains(PERIFRA_OS,macosx)
+
+# perifra os_pigpioc LIBS
+#
+contains(PERIFRA_OS,macosx|linux) {
+perifra_os_pigpioc_LIBS += \
+-lpigpioc 
+} else {
+} # contains(PERIFRA_OS,macosx|linux)
 
 # perifra base LIBS
 #
@@ -387,6 +402,14 @@ perifra_pigpio_LIBS += \
 $${perifra_base_LIBS} \
 $${build_perifra_LIBS} \
 $${perifra_os_pigpio_LIBS} \
+$${perifra_os_LIBS} \
+
+# perifra pigpioc LIBS
+#
+perifra_pigpioc_LIBS += \
+$${perifra_base_LIBS} \
+$${build_perifra_LIBS} \
+$${perifra_os_pigpioc_LIBS} \
 $${perifra_os_LIBS} \
 
 ########################################################################

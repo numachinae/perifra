@@ -585,3 +585,8 @@ perifra_LIBS += \
 #
 perifra_pigpio_LIBS += \
 $${perifra_LIBS} \
+
+# perifra pigpioc LIBS
+#
+perifra_pigpioc_LIBS += \
+$${perifra_LIBS} \
